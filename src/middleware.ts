@@ -5,7 +5,7 @@ import type { Session } from "@/lib/auth";
 const publicRoutes = ["/login", "/register", "/verify-email"];
 const authApiPrefix = "/api/auth";
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Always allow auth API routes
