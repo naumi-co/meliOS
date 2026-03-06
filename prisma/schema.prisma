@@ -1,0 +1,251 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─────────────────────────────────────────────
+// Better Auth managed tables
+// ─────────────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  sessions     Session[]
+  authAccounts AuthAccount[]
+  account      Account?
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model AuthAccount {
+  id                    String    @id @default(cuid())
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?   @db.Text
+  refreshToken          String?   @db.Text
+  idToken               String?   @db.Text
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@map("auth_accounts")
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("verifications")
+}
+
+// ─────────────────────────────────────────────
+// MeliOS business tables (all multi-tenant)
+// ─────────────────────────────────────────────
+
+// One Account per registered business/seller
+model Account {
+  id           String   @id @default(cuid())
+  businessName String
+  country      String   @default("AR") // AR | MX | BR
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  userId String  @unique
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  meliConnections MeliConnection[]
+  items           Item[]
+  orders          Order[]
+  productCosts    ProductCost[]
+  marginResults   MarginResult[]
+  priceSnapshots  PriceSnapshot[]
+  alerts          Alert[]
+
+  @@map("accounts")
+}
+
+// MELI OAuth tokens per account (Phase 2)
+// access_token and refresh_token stored as encrypted strings
+model MeliConnection {
+  id           String   @id @default(cuid())
+  accountId    String
+  account      Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  sellerId     String // MELI seller numeric ID
+  country      String   @default("AR")
+  accessToken  String   @db.Text // encrypted at rest (Phase 2)
+  refreshToken String   @db.Text // encrypted at rest (Phase 2)
+  expiresAt    DateTime
+  scope        String   @default("read,offline_access")
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([accountId, sellerId])
+  @@index([accountId])
+  @@map("meli_connections")
+}
+
+// MELI listings (Phase 2 import)
+model Item {
+  id             String   @id @default(cuid())
+  accountId      String
+  account        Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  meliItemId     String // e.g. "MLA123456789"
+  title          String
+  price          Decimal  @db.Decimal(12, 2)
+  categoryId     String
+  listingType    String // gold_special, gold_pro, etc.
+  shippingConfig Json // raw shipping object from MELI API
+  thumbnail      String?
+  permalink      String?
+  status         String   @default("active") // active | paused | closed
+  availableQty   Int      @default(0)
+  soldQty        Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  orders         Order[]
+  productCost    ProductCost?
+  marginResult   MarginResult?
+  priceSnapshots PriceSnapshot[]
+  alerts         Alert[]
+
+  @@unique([accountId, meliItemId])
+  @@index([accountId])
+  @@index([accountId, status])
+  @@map("items")
+}
+
+// MELI sales/orders (Phase 2 import)
+model Order {
+  id          String   @id @default(cuid())
+  accountId   String
+  account     Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  itemId      String
+  item        Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  meliOrderId String
+  quantity    Int
+  unitPrice   Decimal  @db.Decimal(12, 2)
+  totalAmount Decimal  @db.Decimal(12, 2)
+  dateCreated DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([accountId, meliOrderId])
+  @@index([accountId])
+  @@index([itemId])
+  @@index([accountId, dateCreated])
+  @@map("orders")
+}
+
+// Seller-provided product cost per listing (Phase 3)
+model ProductCost {
+  id        String   @id @default(cuid())
+  accountId String
+  account   Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  itemId    String   @unique
+  item      Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  cost      Decimal  @db.Decimal(12, 2)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([accountId])
+  @@map("product_costs")
+}
+
+// Computed margin results per listing (Phase 3)
+model MarginResult {
+  id              String   @id @default(cuid())
+  accountId       String
+  account         Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  itemId          String   @unique
+  item            Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  commission      Decimal  @db.Decimal(12, 2)
+  shippingCost    Decimal  @db.Decimal(12, 2)
+  installmentCost Decimal  @db.Decimal(12, 2)
+  netMargin       Decimal  @db.Decimal(12, 2)
+  marginPct       Decimal  @db.Decimal(6, 4) // e.g. 0.1523 = 15.23%
+  semaforo        String // green | yellow | red
+  calculatedAt    DateTime @default(now())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([accountId])
+  @@index([accountId, semaforo])
+  @@map("margin_results")
+}
+
+// Competitor price+stock snapshots (Phase 2/El Radar)
+// Created in Phase 1 to begin accumulating data early
+model PriceSnapshot {
+  id               String   @id @default(cuid())
+  accountId        String
+  account          Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  itemId           String
+  item             Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  meliSellerId     String // MELI competitor seller ID
+  price            Decimal  @db.Decimal(12, 2)
+  availableQty     Int
+  catalogProductId String? // for catalog listings
+  snapshotAt       DateTime @default(now())
+  createdAt        DateTime @default(now())
+
+  @@index([accountId])
+  @@index([itemId])
+  @@index([itemId, snapshotAt])
+  @@index([accountId, snapshotAt])
+  @@map("price_snapshots")
+}
+
+// Fired alerts log (Phase 4)
+model Alert {
+  id        String    @id @default(cuid())
+  accountId String
+  account   Account   @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  itemId    String?
+  item      Item?     @relation(fields: [itemId], references: [id], onDelete: SetNull)
+  type      String // negative_margin | out_of_stock | price_drop
+  message   String    @db.Text
+  sentAt    DateTime?
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([accountId])
+  @@index([accountId, readAt])
+  @@map("alerts")
+}
