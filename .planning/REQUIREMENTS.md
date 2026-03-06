@@ -106,10 +106,10 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 | Phase 1 | Pending |
-| AUTH-02 | Phase 1 | Pending |
-| AUTH-03 | Phase 1 | Pending |
-| AUTH-04 | Phase 1 | Pending |
+| AUTH-01 | Phase 1 | In Progress (foundation ready, auth in 01-03) |
+| AUTH-02 | Phase 1 | In Progress (foundation ready, auth in 01-03) |
+| AUTH-03 | Phase 1 | In Progress (foundation ready, auth in 01-03) |
+| AUTH-04 | Phase 1 | In Progress (foundation ready, auth in 01-03) |
 | MELI-01 | Phase 2 | Pending |
 | MELI-02 | Phase 2 | Pending |
 | MELI-03 | Phase 2 | Pending |
@@ -147,4 +147,4 @@
 
 ---
 *Requirements defined: 2026-03-06*
-*Last updated: 2026-03-06 after initial definition from PRD_F1_Radiografia.md*
+*Last updated: 2026-03-06 — AUTH-01..04 moved to In Progress after 01-01 scaffold complete*

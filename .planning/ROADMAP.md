@@ -29,7 +29,7 @@ MeliOps is built in 5 product phases (mapped to 5 milestones), each delivering i
   4. Every push to main deploys automatically to Vercel
 
 Plans:
-- [ ] 01-01: Next.js 15 monorepo setup with TypeScript, Tailwind, ESLint, Prettier
+- [x] 01-01: Next.js 15 monorepo setup with TypeScript, Tailwind, ESLint, Prettier
 - [ ] 01-02: Neon Postgres + Prisma schema (users, accounts, items, orders, price_snapshots, margin_results, product_costs, alerts)
 - [ ] 01-03: Better Auth integration — email/password registration, email verification, login, session management
 - [ ] 01-04: Vercel deployment + environment variables config + preview deployments per PR
@@ -90,7 +90,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Project Foundation + Auth | 0/4 | Not started | - |
+| 1. Project Foundation + Auth | 1/4 | In progress | - |
 | 2. MercadoLibre OAuth + Data Import | 0/4 | Not started | - |
 | 3. Margin Engine | 0/4 | Not started | - |
 | 4. Dashboard + Sync + Alerts | 0/4 | Not started | - |

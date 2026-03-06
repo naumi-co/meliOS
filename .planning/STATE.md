@@ -10,27 +10,27 @@ See: .planning/PROJECT.md (updated 2026-03-06)
 ## Current Position
 
 Phase: 1 of 4 (Project Foundation + Auth)
-Plan: 0 of 4 in current phase
-Status: Ready to plan
-Last activity: 2026-03-06 — Project initialized. PROJECT.md, ROADMAP.md, REQUIREMENTS.md, config.json, and STATE.md created.
+Plan: 1 of 4 in current phase
+Status: In progress
+Last activity: 2026-03-06 — Completed 01-01 (Next.js scaffold, Tailwind, ESLint, Prettier, route groups)
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [█░░░░░░░░░] 6%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 0
-- Average duration: —
-- Total execution time: 0 hours
+- Total plans completed: 1
+- Average duration: 4 min
+- Total execution time: 0.07 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 01-project-foundation-auth | 1/4 | 4 min | 4 min |
 
 **Recent Trend:**
-- Last 5 plans: —
+- Last 5 plans: 4 min
 - Trend: —
 
 *Updated after each plan completion*
@@ -46,10 +46,14 @@ Recent decisions affecting current work:
 - Init: Argentina-only for v1; OAuth URL patterns parameterized for future multi-country support
 - Init: price_snapshots table included in Phase 1 schema to accumulate competitor data for v2 (El Radar)
 - Init: Multi-tenant `account_id` scoping required on all DB tables from day 1
+- 01-01: Next.js 16 (latest) used instead of 15 — create-next-app@latest installs 16.1.6; stable and forward-compatible
+- 01-01: Tailwind v4 used (not v3) — @import syntax, no tailwind.config.ts required
+- 01-01: Flat ESLint config (eslint.config.mjs) instead of .eslintrc.json — Next.js 16 default
+- 01-01: eslint . used instead of next lint — next lint subcommand removed in Next.js 16
 
 ### Pending Todos
 
-None yet.
+None.
 
 ### Blockers/Concerns
 
@@ -58,5 +62,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-06
-Stopped at: Project initialization complete. All planning artifacts created.
+Stopped at: Completed 01-01-PLAN.md — Next.js scaffold complete. Ready for 01-02 (database schema).
 Resume file: None
