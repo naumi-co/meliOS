@@ -18,6 +18,8 @@ model User {
   email         String    @unique
   emailVerified Boolean   @default(false)
   image         String?
+  businessName  String    @default("")
+  country       String    @default("AR")
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
