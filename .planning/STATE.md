@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-03-06)
 ## Current Position
 
 Phase: 1 of 4 (Project Foundation + Auth)
-Plan: 1 of 4 in current phase
+Plan: 2 of 4 in current phase
 Status: In progress
-Last activity: 2026-03-06 — Completed 01-01 (Next.js scaffold, Tailwind, ESLint, Prettier, route groups)
+Last activity: 2026-03-06 — Completed 01-02 (Prisma 7 schema, Neon adapter, db.ts singleton)
 
-Progress: [█░░░░░░░░░] 6%
+Progress: [██░░░░░░░░] 13%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1
-- Average duration: 4 min
-- Total execution time: 0.07 hours
+- Total plans completed: 2
+- Average duration: 5 min
+- Total execution time: 0.15 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-project-foundation-auth | 1/4 | 4 min | 4 min |
+| 01-project-foundation-auth | 2/4 | 9 min | 5 min |
 
 **Recent Trend:**
-- Last 5 plans: 4 min
-- Trend: —
+- Last 5 plans: 4 min, 5 min
+- Trend: steady
 
 *Updated after each plan completion*
 
@@ -50,6 +50,9 @@ Recent decisions affecting current work:
 - 01-01: Tailwind v4 used (not v3) — @import syntax, no tailwind.config.ts required
 - 01-01: Flat ESLint config (eslint.config.mjs) instead of .eslintrc.json — Next.js 16 default
 - 01-01: eslint . used instead of next lint — next lint subcommand removed in Next.js 16
+- 01-02: Prisma 7 installed (not 5/6) — url removed from schema.prisma, requires @prisma/adapter-neon for runtime connectivity
+- 01-02: PrismaClient requires adapter or accelerateUrl in Prisma 7 — using @prisma/adapter-neon with PrismaNeon({ connectionString })
+- 01-02: All 12 models written upfront (Phases 1-5) to avoid retroactive migrations; PriceSnapshot live from Phase 1
 
 ### Pending Todos
 
@@ -62,5 +65,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-03-06
-Stopped at: Completed 01-01-PLAN.md — Next.js scaffold complete. Ready for 01-02 (database schema).
+Stopped at: Completed 01-02-PLAN.md — Prisma schema + db.ts complete. Waiting for user to add Neon credentials to .env.local then run npm run db:push. Ready for 01-03 (Better Auth) after push.
 Resume file: None

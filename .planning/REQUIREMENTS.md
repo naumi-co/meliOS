@@ -7,9 +7,9 @@
 
 ### Authentication
 
-- [ ] **AUTH-01**: User can register with email and password
-- [ ] **AUTH-02**: User receives email verification link after signup and must confirm before accessing the app
-- [ ] **AUTH-03**: User can log in and session persists across browser refresh
+- [x] **AUTH-01**: User can register with email and password
+- [x] **AUTH-02**: User receives email verification link after signup and must confirm before accessing the app
+- [x] **AUTH-03**: User can log in and session persists across browser refresh
 - [ ] **AUTH-04**: User can log out from any page
 
 ### MercadoLibre Connection
