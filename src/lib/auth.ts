@@ -18,6 +18,7 @@ export const auth = betterAuth({
     },
     expiresIn: 60 * 60 * 24, // 24 hours in seconds
     autoSignInAfterVerification: true,
+    callbackURL: "/dashboard",
   },
   session: {
     expiresIn: 60 * 60 * 24 * 30, // 30 days

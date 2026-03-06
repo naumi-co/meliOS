@@ -7,24 +7,27 @@ import { signUp } from "@/lib/auth-client";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const [fields, setFields] = useState({ businessName: "", email: "", password: "", country: "AR" });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
+    const { name, value } = e.target;
+    setFields((prev) => ({ ...prev, [name]: value }));
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
     setLoading(true);
 
-    const form = e.currentTarget;
-    const data = new FormData(form);
-
     const { error } = await signUp.email({
-      email: data.get("email") as string,
-      password: data.get("password") as string,
-      name: data.get("businessName") as string,
+      email: fields.email,
+      password: fields.password,
+      name: fields.businessName,
       // @ts-expect-error — additional fields supported via Better Auth config
-      businessName: data.get("businessName") as string,
-      country: (data.get("country") as string) ?? "AR",
+      businessName: fields.businessName,
+      country: fields.country,
     });
 
     if (error) {
@@ -53,6 +56,9 @@ export default function RegisterPage() {
               name="businessName"
               type="text"
               required
+              autoComplete="organization"
+              value={fields.businessName}
+              onChange={handleChange}
               className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
@@ -65,6 +71,9 @@ export default function RegisterPage() {
               name="email"
               type="email"
               required
+              autoComplete="email"
+              value={fields.email}
+              onChange={handleChange}
               className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
@@ -78,6 +87,9 @@ export default function RegisterPage() {
               type="password"
               required
               minLength={8}
+              autoComplete="new-password"
+              value={fields.password}
+              onChange={handleChange}
               className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
@@ -88,7 +100,8 @@ export default function RegisterPage() {
             <select
               id="country"
               name="country"
-              defaultValue="AR"
+              value={fields.country}
+              onChange={handleChange}
               className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
             >
               <option value="AR">Argentina</option>

@@ -24,8 +24,8 @@ model User {
   updatedAt     DateTime  @updatedAt
 
   sessions     Session[]
-  authAccounts AuthAccount[]
-  account      Account?
+  authAccounts Account[]
+  sellerAccount SellerAccount?
 
   @@map("users")
 }
@@ -44,7 +44,7 @@ model Session {
   @@map("sessions")
 }
 
-model AuthAccount {
+model Account {
   id                    String    @id @default(cuid())
   accountId             String
   providerId            String
@@ -78,8 +78,8 @@ model Verification {
 // MeliOS business tables (all multi-tenant)
 // ─────────────────────────────────────────────
 
-// One Account per registered business/seller
-model Account {
+// One SellerAccount per registered business/seller
+model SellerAccount {
   id           String   @id @default(cuid())
   businessName String
   country      String   @default("AR") // AR | MX | BR
@@ -105,7 +105,7 @@ model Account {
 model MeliConnection {
   id           String   @id @default(cuid())
   accountId    String
-  account      Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  account      SellerAccount  @relation(fields: [accountId], references: [id], onDelete: Cascade)
   sellerId     String // MELI seller numeric ID
   country      String   @default("AR")
   accessToken  String   @db.Text // encrypted at rest (Phase 2)
@@ -125,7 +125,7 @@ model MeliConnection {
 model Item {
   id             String   @id @default(cuid())
   accountId      String
-  account        Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  account        SellerAccount  @relation(fields: [accountId], references: [id], onDelete: Cascade)
   meliItemId     String // e.g. "MLA123456789"
   title          String
   price          Decimal  @db.Decimal(12, 2)
@@ -156,7 +156,7 @@ model Item {
 model Order {
   id          String   @id @default(cuid())
   accountId   String
-  account     Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  account     SellerAccount  @relation(fields: [accountId], references: [id], onDelete: Cascade)
   itemId      String
   item        Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
   meliOrderId String
@@ -178,7 +178,7 @@ model Order {
 model ProductCost {
   id        String   @id @default(cuid())
   accountId String
-  account   Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  account   SellerAccount  @relation(fields: [accountId], references: [id], onDelete: Cascade)
   itemId    String   @unique
   item      Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
   cost      Decimal  @db.Decimal(12, 2)
@@ -193,7 +193,7 @@ model ProductCost {
 model MarginResult {
   id              String   @id @default(cuid())
   accountId       String
-  account         Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  account         SellerAccount  @relation(fields: [accountId], references: [id], onDelete: Cascade)
   itemId          String   @unique
   item            Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
   commission      Decimal  @db.Decimal(12, 2)
@@ -216,7 +216,7 @@ model MarginResult {
 model PriceSnapshot {
   id               String   @id @default(cuid())
   accountId        String
-  account          Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  account          SellerAccount  @relation(fields: [accountId], references: [id], onDelete: Cascade)
   itemId           String
   item             Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
   meliSellerId     String // MELI competitor seller ID
@@ -237,7 +237,7 @@ model PriceSnapshot {
 model Alert {
   id        String    @id @default(cuid())
   accountId String
-  account   Account   @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  account   SellerAccount   @relation(fields: [accountId], references: [id], onDelete: Cascade)
   itemId    String?
   item      Item?     @relation(fields: [itemId], references: [id], onDelete: SetNull)
   type      String // negative_margin | out_of_stock | price_drop
