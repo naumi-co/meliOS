@@ -28,6 +28,7 @@ export default function RegisterPage() {
       // @ts-expect-error — additional fields supported via Better Auth config
       businessName: fields.businessName,
       country: fields.country,
+      callbackURL: "/dashboard",
     });
 
     if (error) {
