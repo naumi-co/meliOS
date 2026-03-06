@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: — La Radiografia
-status: executing
-stopped_at: Completed 01-03-PLAN.md — Better Auth email/password auth flow fully working. Ready for 01-04.
-last_updated: "2026-03-06T04:30:14.465Z"
-last_activity: 2026-03-06 — Completed 01-02 (Prisma 7 schema, Neon adapter, db.ts singleton)
+status: completed
+stopped_at: Completed 01-04-PLAN.md — Vercel production deployment live, CI/CD pipeline green, Phase 1 complete.
+last_updated: "2026-03-06T12:51:12.165Z"
+last_activity: "2026-03-06 — Completed 01-04 (GitHub Actions CI, Vercel deployment, production auth flow verified at https://meli-os.vercel.app/)"
 progress:
   total_phases: 4
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 4
-  completed_plans: 3
-  percent: 75
+  completed_plans: 4
+  percent: 100
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-06)
 
 **Core value:** A seller connects their MELI account and immediately sees which listings are losing money — before spending a single minute configuring anything else.
-**Current focus:** Phase 1 — Project Foundation + Auth
+**Current focus:** Phase 2 — MELI OAuth Integration
 
 ## Current Position
 
-Phase: 1 of 4 (Project Foundation + Auth)
-Plan: 3 of 4 in current phase
-Status: In progress
-Last activity: 2026-03-06 — Completed 01-03 (Better Auth email/password auth, Resend email verification, protected dashboard)
+Phase: 1 of 4 (Project Foundation + Auth) — COMPLETE
+Plan: 4 of 4 complete
+Status: Phase 1 complete — ready for Phase 2
+Last activity: 2026-03-06 — Completed 01-04 (GitHub Actions CI, Vercel deployment, production auth flow verified at https://meli-os.vercel.app/)
 
-Progress: [████████░░] 75%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -51,6 +51,7 @@ Progress: [████████░░] 75%
 
 *Updated after each plan completion*
 | Phase 01-project-foundation-auth P03 | 90 | 3 tasks | 14 files |
+| Phase 01-project-foundation-auth P04 | 45 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -72,6 +73,8 @@ Recent decisions affecting current work:
 - 01-02: All 12 models written upfront (Phases 1-5) to avoid retroactive migrations; PriceSnapshot live from Phase 1
 - [Phase 01-project-foundation-auth]: 01-03: AuthAccount renamed to Account (Better Auth Prisma adapter requirement); business Account renamed to SellerAccount to avoid collision
 - [Phase 01-project-foundation-auth]: 01-03: callbackURL: '/dashboard' required in emailVerification config for post-verification redirect to work correctly
+- [Phase 01-project-foundation-auth]: 01-04: postinstall prisma generate required in package.json for Vercel builds (Prisma 7 doesn't auto-generate)
+- [Phase 01-project-foundation-auth]: 01-04: Production URL is https://meli-os.vercel.app/ — Vercel region gru1 (São Paulo) for Argentina latency
 
 ### Pending Todos
 
@@ -83,6 +86,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-06T04:30:14.463Z
-Stopped at: Completed 01-03-PLAN.md — Better Auth email/password auth flow fully working. Ready for 01-04.
+Last session: 2026-03-06T12:50:36Z
+Stopped at: Completed 01-04-PLAN.md — Vercel production deployment live, CI/CD pipeline green, Phase 1 complete.
 Resume file: None
