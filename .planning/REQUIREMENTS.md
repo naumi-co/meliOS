@@ -10,7 +10,7 @@
 - [x] **AUTH-01**: User can register with email and password
 - [x] **AUTH-02**: User receives email verification link after signup and must confirm before accessing the app
 - [x] **AUTH-03**: User can log in and session persists across browser refresh
-- [ ] **AUTH-04**: User can log out from any page
+- [x] **AUTH-04**: User can log out from any page
 
 ### MercadoLibre Connection
 
@@ -106,10 +106,10 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 | Phase 1 | In Progress (foundation ready, auth in 01-03) |
-| AUTH-02 | Phase 1 | In Progress (foundation ready, auth in 01-03) |
-| AUTH-03 | Phase 1 | In Progress (foundation ready, auth in 01-03) |
-| AUTH-04 | Phase 1 | In Progress (foundation ready, auth in 01-03) |
+| AUTH-01 | Phase 1 | Completed (01-03) |
+| AUTH-02 | Phase 1 | Completed (01-03) |
+| AUTH-03 | Phase 1 | Completed (01-03) |
+| AUTH-04 | Phase 1 | Completed (01-03) |
 | MELI-01 | Phase 2 | Pending |
 | MELI-02 | Phase 2 | Pending |
 | MELI-03 | Phase 2 | Pending |
